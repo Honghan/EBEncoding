@@ -1,6 +1,9 @@
 # EBEncoding - efficient bitwise encoding for temporal (medical) data
 Episode Bitwise Encoding is an encoding method designed for abstracting multiple medication episodes of a patient related to a certain event, e.g., an adverse drug event. This being said, such encoding is actually domain independent and can be applied to any temporal events. 
 
+> The typical purpose of such encoding is to make time series data easy to be consumed. One time series (e.g., a drug usage in past months) can be encoded as one numberic value. Multiple time series (e.g., multipharmacy) can be encoded as a vector. Therefore, after encoded, such data can be easily analysed (e.g., used in off-the-shelf machine learning algorithms).
+
+
 ## Example: Medication Episode Encoding for an Adverse Drug Event
 <p>
   <img src="https://github.com/Honghan/EBEncoding/blob/master/EBEncoding/imgs/fig2.png" width="468"/>
