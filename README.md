@@ -36,3 +36,9 @@ Sample output:
 Drug,EpisodeStartDate,EpisodeEndDate,id,type,ADE_Date,encoded
 Olanzapine,2010-12-14 00:00:00.000,2010-12-14 00:00:00.000,182,Enuresis,2010-12-14 00:00:00.000,2147483648
 ```
+
+##Questions?
+This is my ongoing work (2016) at Kings College London. Any questions please email: honghan.wu@kcl.ac.uk.
+
+##citation
+Honghan Wu, Zina Ibrahim, Ehtesham Iqbal and Richard Dobson. Predicting Adverse Events from Multiple and Dynamic Medication Episodes - a preliminary result in a large mental health registry. Accepted by IJCAI 2016 - Workshop on Knowledge Discovery in Healthcare Data.
