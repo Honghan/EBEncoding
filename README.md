@@ -15,7 +15,7 @@ Figure 1 illustrates an example encoding scenario. The upper part shows the samp
 1. From the the inspecting time spot, look back to a certain period of time, e.g., 20 days. In our experiments, we selected 30 days. 
 2. Split the time period into intervals using a unit of time, e.g., a day or a week. Number each interval in an ascendent order (started from zero) starting from the inspecting time spot. For example, 4 intervals are identified and numbered in `Figure 1`.
 3. Add the patient's medication episodes to the timeline. 
-4. For each medication episode, allocate a sequence of bits aligned with the interval order we obtained in step 2. The interval numbered zero is aligned with the most significant bit in the sequence. For each interval, set the corresponding bit to `1` if the interval intersects with the episode, and to `0` otherwise. For example, Medication Episode 2 (M2) in Figure~\ref{fig:coding} spans across interval number `1` and `2`. Its encoding is `0110` in binary code.
+4. For each medication episode, allocate a sequence of bits aligned with the interval order we obtained in step 2. The interval numbered zero is aligned with the most significant bit in the sequence. For each interval, set the corresponding bit to `1` if the interval intersects with the episode, and to `0` otherwise. For example, Medication Episode 2 (M2) in `Figure 1` spans across interval number `1` and `2`. Its encoding is `0110` in binary code.
 5. Repeat step 4 for all medication episodes. We will get a vector representing all the relevant medication episodes of the inspecting time spot.
 
 ## Usage
