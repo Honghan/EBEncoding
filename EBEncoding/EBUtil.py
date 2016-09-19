@@ -1,6 +1,12 @@
-from xlrd import open_workbook
-from sets import Set
-import re, urllib, ctypes, csv, codecs, random
+# Episode Bitwise Encoding Utils
+# Sep 2016
+# Honghan Wu @KCL
+#
+# Util/helper funtions
+#
+
+import csv
+import codecs
 from datetime import datetime, timedelta
 from os import listdir
 from os.path import isfile, join, splitext
