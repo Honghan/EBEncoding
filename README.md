@@ -6,7 +6,7 @@ The motivation of such encoding is to make time series data easy to be consumed.
 ## updates
 - (23 September 2016) Define classess of EBEncoding and EBVector with opertators. The update was put on a new branch, which was set as the default branch. A sample usage file was added and the applicaiton of the encoding/vectors/matrix in Adverse Drug Event analytics was implemented in the `EBUtils.py`.
 <p/>
-  The Singular Value Decomposition on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge as shown in the following picture. (This study is an ongoing work and hopefully, more details will be published soon.)
+  The Singular Value Decomposition on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge as shown in the following picture. The absolute y values represent the significances of each drug pair in terms of the correlation to the adverse event. (This study is an ongoing work and hopefully, more details will be published soon.)
 <p>
   <img src="https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/imgs/drug_drug_ADE_filtered.png" width="400"/>
 </p>
