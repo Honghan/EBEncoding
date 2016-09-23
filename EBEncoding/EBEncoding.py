@@ -80,7 +80,15 @@ class EBEncoding:
     def clone(self):
         return EBEncoding(self.coding, self.size())
 
+    # a scoring funciton to get importance quantity from the encoding
+    # this is just an example to showcase how to score an encoded episode
+    # users might define their own score functions based on their scenarios
     def score_bitorder(self):
+        """
+        a score function to calculate the importance of an encoding
+        the score is simply the sum of order indices of non-zero bits.
+        :return: the score value
+        """
         score = 0
         for i in range(self.size()):
             if (1 << self.size() - i - 1) & self.coding != 0:
@@ -189,10 +197,8 @@ class EBVector:
         for i in range(len(t_dm_arr)):
             merged = 0
             for j in range(len(eb_vec)):
-                merged |= eb_vec[j].coding_value() * t_dm_arr[i][j]
-            ret_list.append(EBEncoding(merged, eb_vec[0].size()))
-        for r in ret_list:
-            print ''.join(r.get_bin_list())
+                merged |= self.get_coding(j).coding_value() * t_dm_arr[i][j]
+            ret_list.append(EBEncoding(merged, self.get_coding(0).size()))
         return ret_list
 
     # doing pair-wise intersection between this instance and other_vec
