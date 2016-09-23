@@ -3,6 +3,8 @@ Episode Bitwise Encoding is an encoding method designed for abstracting multiple
 
 The motivation of such encoding is to make time series data easy to be consumed. One time series (e.g., a drug usage in past months) can be encoded as one numberic value. Multiple time series (e.g., multipharmacy) can be encoded as a vector. Therefore, after encoded, such data can be easily analysed (e.g., used in off-the-shelf machine learning algorithms). In our first use case, it is used for predicting adverse drug events for patients with mental health disorders.
 
+## updates
+- (23 September 2016) Define classess of EBEncoding and EBVector with opertators. The update was put on a new branch, which was set as the default branch. A sample usage file was added and the applicaiton of the encoding/vectors/matrix in Adverse Drug Event analytics was implemented in the `EBUtils.py`.
 
 ## Example: Medication Episode Encoding for an Adverse Drug Event
 <p>
@@ -24,26 +26,9 @@ The resulting bitwise encoding has the following features:
 - *Flexible* Different units of time can be used in step 2, enabling variable levels of granularity. For example, if the unit used is 4 times bigger in `Figure1`, all three medication episodes will be encoded as `1`. The same number of bits can cover medication periods that are four folds longer. The obvious loss of information however must be taken into account when choosing a time unit. 
 
 ## Usage
-- The input data is simply a set of events, each of which has two attributes (`EpisodeStartDate`, `EpisodeEndDate`).
-- The output data is a replica of the input except that a new attribute `encoded` is added to store the encoded value.
-
-Using the script is quite simple. Get the python script in your working folder. And run it as follows.
-```
-python EBEncoding.py
-```
-The script will look for all files ended with `csv` extention as the input data (please refer the sample input `sample_input.csv` file for the format). Essentially, each row of the input file is an event with two attributes (`EpisodeStartDate`, `EpisodeEndDate`). The output file will be named by adding '_o' at the end of the input file, where each row will be with an additional column of the encoding result.
-
-Sample input:
-```
-Drug,EpisodeStartDate,EpisodeEndDate,id,type,ADE_Date
-Olanzapine,2010-12-14 00:00:00.000,2010-12-14 00:00:00.000,182,Enuresis,2010-12-14 00:00:00.000
-```
-
-Sample output:
-```
-Drug,EpisodeStartDate,EpisodeEndDate,id,type,ADE_Date,encoded
-Olanzapine,2010-12-14 00:00:00.000,2010-12-14 00:00:00.000,182,Enuresis,2010-12-14 00:00:00.000,2147483648
-```
+The EBEncoding.py contains the encoding class and vector class definition. Two usage examples:
+- the general usage example is available [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/ebencoding_example.py)
+- the application of the encoding in Adverse Drug Event Analytics is [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/EBUtil.py)
 
 ##Questions?
 This is my ongoing work (2016) at Kings College London. Any questions please email: honghan.wu@kcl.ac.uk.
