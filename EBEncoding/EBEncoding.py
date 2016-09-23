@@ -23,7 +23,7 @@ class EBEncoding:
     """
 
     def __init__(self, value, size):
-        if value >= 2**size - 1:
+        if value > 2**size - 1:
             raise Exception('value ({}) is too large to fit the size ({}) {}'.format(value, size, 2**size - 1))
         self.coding = value
         self.bit_size = size
@@ -224,19 +224,5 @@ class EBVector:
         return ret_list, nonzero_keys
 
 
-def test_eb():
-    e = EBEncoding(2147483648, 32)
-    print e.coding_value(), ''.join(e.get_bin_list()), e.score_bitorder()
-    # v = EBVector([e, EBEncoding(106, 10)])
-    # v.transform(np.matrix([[1, 1, 0], [0, 1, 1]]))
-    #
-    # e.scale_down(e.size())
-    # print e.coding_value(), ''.join(e.get_bin_list())
-    #
-    # m = np.matrix([[.123, .36, .23], [.338, .29, .29]])
-    # u, s, v = np.linalg.svd(m)
-    # print u, s, v
-
-
 if __name__ == "__main__":
-    test_eb()
+    pass
