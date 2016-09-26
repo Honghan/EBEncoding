@@ -5,7 +5,7 @@ import numpy as np
 # sample usages of the EBEncoding class and EBVector class
 def test_eb():
     print '\n>>create a EBEncoding instance'
-    e = EBEncoding(123, 8)
+    e = EBEncoding(123, 8) # arg1 - the encoding value, arg2 - the number of bits of this encoding
     print 'Value {} is encoded as {}, its score is {}'.format(
         e.coding_value(),  # get the int value of the encoding object
         ''.join(e.get_bin_list()),  # get the binary string of the encoding
