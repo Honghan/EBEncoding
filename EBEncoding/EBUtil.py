@@ -152,6 +152,7 @@ def do_svd_analysis(episode_matrix, episode_labels, fn, filter_func=None, known_
             x=episode_labels,
             y=u[:, i] if filter_func is None else filter_func(u[:, i], episode_labels, known_causes=known_knowledge)
         ))
+        print ' -{}- \n'.format(i)
     py.plot(traces, filename=fn)
     print 'all done'
 
@@ -168,6 +169,7 @@ def filter_known_knowledge(arr, drugs, known_causes):
                 break
         if abs(arr[i]) > 0.1 and not bKnown:
             filtered_vals.append(arr[i])
+            print drugs[i]
         else:
             filtered_vals.append(0)
     return filtered_vals
@@ -235,7 +237,9 @@ def do_medication_ade_analysis():
         arr = k.split(' ')
         drug_pairs.append('{} - {}'.format(drugs[int(arr[0])].strip(), drugs[int(arr[1])].strip()))
     # do SVD analysis
-    do_svd_analysis(m_dics['drug-drug-ADE'], drug_pairs, 'drug_drug_ADE_filtered', filter_func=filter_known_knowledge)
+    do_svd_analysis(m_dics['drug-drug-ADE'], drug_pairs, 'drug_drug_ADE_filtered',
+                    filter_func=filter_known_knowledge,
+                    known_knowledge=known_causes_enuresis)
 
 if __name__ == "__main__":
     do_medication_ade_analysis()
