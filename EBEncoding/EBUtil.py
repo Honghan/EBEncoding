@@ -130,7 +130,9 @@ def visualise_drug_ade_matrix(episode_matrix, fn):
 
 
 # do SVD analysis on given matrix (sparse)
-def do_svd_analysis(episode_matrix, episode_labels, fn, filter_func=None, known_knowledge=None):
+def do_svd_analysis(episode_matrix, episode_labels, fn,
+                    filter_func=None, known_knowledge=None,
+                    label_conversion_map=None):
     """
     do svd analysis on given episode matrix and save the top k singular vector to plot.ly
     :param episode_matrix: rows are episodes (e.g., medications) and columns are events (e.g., ADEs)
@@ -139,6 +141,7 @@ def do_svd_analysis(episode_matrix, episode_labels, fn, filter_func=None, known_
     :param filter_func: (optional) filer the singular vector
     :param known_knowledge: (optional, but needed if filter func is provided) the list of
       row labels that should be ignored
+    :param label_conversion_map: the map to convert a set of labels into another set
     :return:
     """
     print 'doing svd...'
@@ -147,10 +150,29 @@ def do_svd_analysis(episode_matrix, episode_labels, fn, filter_func=None, known_
     vec_pca = np.matrix(u) * np.diag(s)  # * np.matrix(v)
     arr_pca = np.array(vec_pca)
     traces = []
-    for i in range(10):
-        traces.append(go.Scatter(
-            x=episode_labels,
-            y=u[:, i] if filter_func is None else filter_func(u[:, i], episode_labels, known_causes=known_knowledge)
+
+    x_arr = [l.strip() for l in episode_labels] if label_conversion_map is None \
+        else [label_conversion_map[l.strip()] if l.strip() in label_conversion_map
+              else '$'+l for l in episode_labels]
+    x_dic = {}
+    x_list = []
+    for i in range(len(x_arr)):
+        x = x_arr[i]
+        x_dic[x] = [i] if x not in x_dic else x_dic[x] + [i]
+        if x not in x_list:
+            x_list.append(x)
+    x_list = sorted(x_list)
+    for i in range(5):
+        y_vals = u[:, i] if filter_func is None else filter_func(u[:, i], episode_labels, known_causes=known_knowledge)
+        y_arr = []
+        for j in range(len(x_list)):
+            y = 0
+            for idx in x_dic[x_list[j]]:
+                y += y_vals[idx]
+            y_arr.append(y)
+        traces.append(go.Bar(
+            x=x_list,
+            y=y_arr
         ))
         print ' -{}- \n'.format(i)
     py.plot(traces, filename=fn)
@@ -170,6 +192,17 @@ def filter_known_knowledge(arr, drugs, known_causes):
         if abs(arr[i]) > 0.1 and not bKnown:
             filtered_vals.append(arr[i])
             print drugs[i]
+        else:
+            filtered_vals.append(0)
+    return filtered_vals
+
+
+# filtered out known knowledge from Singular Vectors
+def y_threshold_filter(arr, drugs, known_causes):
+    filtered_vals = []
+    for i in range(len(arr)):
+        if abs(arr[i]) > 0.1:
+            filtered_vals.append(arr[i])
         else:
             filtered_vals.append(0)
     return filtered_vals
@@ -224,8 +257,23 @@ def compute_episode_interaction_matrix(mat_file, mat_key, thread_num, output_fil
                             callback_func=intersection_call_back)
 
 
+def do_single_drug_ade_analytics():
+    # load drug name list
+    m_dics = sio.loadmat('./data/drug-ade.mat')
+    drugs = m_dics['drugs']
+    matrix = m_dics['drug-ade']
+    # load drug cats
+    drug_cats = gu.load_json_data('./data/drug_cat.json')
+    prim_dic = {}
+    for d in drug_cats:
+        prim_dic[d] = drug_cats[d]['primary']
+    # do SVD analysis
+    do_svd_analysis(matrix, drugs, 'Drug-ADE-SVD-Vectors', #label_conversion_map=prim_dic,
+                    filter_func=y_threshold_filter)
+
+
 # do medication ADE analysis
-def do_medication_ade_analysis():
+def do_drugdrug_ade_analysis():
     # load drug name list
     drugs = load_matrix('./data/drug-ade.mat', 'drugs')
     # load drug-drug mat dictionary
@@ -233,16 +281,35 @@ def do_medication_ade_analysis():
     # convert index pairs into drug name pairs
     keys = m_dics['keys']
     drug_pairs = []
+    # load drug cats
+    drug_cats = gu.load_json_data('./data/drug_cat.json')
+
     for k in keys:
-        arr = k.split(' ')
-        drug_pairs.append('{} - {}'.format(drugs[int(arr[0])].strip(), drugs[int(arr[1])].strip()))
+        arr = k.strip().split(' ')
+        # names= [drugs[int(arr[0])].strip(), drugs[int(arr[1])].strip()]
+        names = sorted([(drug_cats[drugs[int(idx)].strip()]['primary']
+                         if drugs[int(idx)].strip() in drug_cats else 'drug') for idx in arr])
+        drug_pairs.append('{} - {}'.format(names[0], names[1]))
     # do SVD analysis
-    do_svd_analysis(m_dics['drug-drug-ADE'], drug_pairs, 'drug_drug_ADE_filtered',
+    do_svd_analysis(m_dics['drug-drug-ADE'], drug_pairs, #'drug_drug_ADE_filtered',
+                    'drug-durg_primary_ADE_filtered',
                     filter_func=filter_known_knowledge,
                     known_knowledge=known_causes_enuresis)
 
+
+def save_drug_cat():
+    fp = './data/drug_cat.csv'
+    rows = gu.read_csv_file(fp)
+    drug_dict = {}
+    for r in rows:
+            drug_dict[r['Generic_Name']] = {'third': r['Third_Category'],
+                                            'second': r['Secondary_Category'],
+                                            'primary': r['Primary_Category']}
+    gu.save_json_obj(drug_dict, './data/drug_cat.json')
+
 if __name__ == "__main__":
-    do_medication_ade_analysis()
+    # do_drugdrug_ade_analysis()
+    do_single_drug_ade_analytics()
 
 
 
