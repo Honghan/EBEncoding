@@ -5,11 +5,6 @@ The motivation of such encoding is to make time series data easy to be consumed.
 
 ## updates
 - (23 September 2016) Define classess of EBEncoding and EBVector with opertators. The update was put on a new branch, which was set as the default branch. A sample usage file was added and the applicaiton of the encoding/vectors/matrix in Adverse Drug Event analytics was implemented in the `EBUtils.py`.
-<p/>
-  (a preliminary result of encoding drug-drug interaction data in ADE analytics) The Singular Value Decomposition on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge as shown in the following picture. The absolute y values represent the significances of each drug pair in terms of its correlation to the adverse event. (This study is an ongoing work and more details will be updated soon.)
-<p>
-  <img src="https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/imgs/drug_drug_ADE_filtered.png" width="400"/>
-</p>
 
 ## Usage
 The EBEncoding.py contains the encoding class and vector class definition. Two usage examples:
@@ -18,6 +13,7 @@ The EBEncoding.py contains the encoding class and vector class definition. Two u
 
 ## Analytics using the coding
 - [Association Analysis of Adverse Drug Events and Polyphamacy](http://honghan.info/kcl/ade/) 
+- A preliminary result of encoding drug-drug interaction data in ADE analytics) The Singular Value Decomposition on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge as shown in the following picture. The absolute y values represent the significances of each drug pair in terms of its correlation to the adverse event. (This study is an ongoing work and more details will be updated soon.)
 
 ##Questions?
 This is my ongoing work (2016) at Kings College London. Any questions please email: honghan.wu@kcl.ac.uk.
