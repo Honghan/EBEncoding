@@ -13,7 +13,7 @@ The EBEncoding.py contains the encoding class and vector class definition. Two u
 
 ## Analytics using the coding
 - [Association Analysis of Adverse Drug Events and Polyphamacy](http://honghan.info/kcl/ade/) 
-- A preliminary result of encoding drug-drug interaction data in ADE analytics) The Singular Value Decomposition on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge as shown in the following picture. The absolute y values represent the significances of each drug pair in terms of its correlation to the adverse event. (This study is an ongoing work and more details will be updated soon.)
+- Drug-drug interaction analysis: using SVD (Singular Value Decomposition) on the matrix of drug-drug interaction Episode Encodings over 47k Adverse Events has revealed some potential *new* knowledge. The top 5 singular vectors after removing known causes of the ADE are visualised [here](https://plot.ly/~honghan.wu/10/). The absolute y values represent the significances of each drug pair in terms of its correlation to the adverse event. (This study is an ongoing work and more details will be updated soon.)
 
 ##Questions?
 This is my ongoing work (2016) at Kings College London. Any questions please email: honghan.wu@kcl.ac.uk.
