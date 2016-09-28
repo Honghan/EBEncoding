@@ -16,7 +16,7 @@ The EBEncoding.py contains the encoding class and vector class definition. Two u
 - the general usage example is available [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/ebencoding_example.py)
 - the application of the encoding in Adverse Drug Event Analytics is [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/EBUtil.py)
 
-## Analitics using the coding
+## Analytics using the coding
 - [Association Analasis of Adverse Drug Events and Polyphamacy](http://honghan.info/kcl/ade/) 
 
 ##Questions?
