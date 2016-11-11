@@ -2,6 +2,20 @@ from EBEncoding import EBEncoding, EBVector
 import numpy as np
 
 
+def test_correlation():
+    v1 = 0b01110000
+    v2 = 0b00011101
+    e1 = EBEncoding(v1, 8)
+    e2 = EBEncoding(v2, 8)
+    xval = EBEncoding.xcorr(e1, e2)
+    print '\n>>> example of cross correlation between two episodes'
+    print 'e1: [%s]' % ''.join(e1.get_bin_list())
+    print 'e2: [%s]' % ''.join(e2.get_bin_list())
+    print 'cross correlation of e1 and e2 is %s' % xval
+    print 'e2 is %s units earlier' % EBEncoding.num_units_earlier(xval, e1)
+    print 'the time delay is %s' % EBEncoding.time_delay(xval)
+
+
 # sample usages of the EBEncoding class and EBVector class
 def test_eb():
     print '\n>>create a EBEncoding instance'
@@ -40,3 +54,4 @@ def test_eb():
 
 if __name__ == "__main__":
     test_eb()
+    test_correlation()
