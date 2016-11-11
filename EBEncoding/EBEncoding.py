@@ -18,7 +18,8 @@ from scipy.sparse import csc
 class EBEncoding:
     """
     This class is designed for encoding episodic data and its operations
-    The design and implementation was undergoing with a biomedical use case (adverse drug event analytics) in mind.
+    The design and implementation was undergoing with a biomedical use case
+    (adverse drug event analytics) in mind.
     However, it should be applied to any episodic data analytic scenarios.
     """
 
@@ -42,6 +43,19 @@ class EBEncoding:
 
     def coding_value(self):
         return self.coding
+
+    def get_highest_bit_val(self):
+        arr = BitArray(bin(self.coding))
+        return 0 if len(arr) == 1 and arr[0] == 0 else 1 << len(arr) - 1
+
+    def get_lowest_bit_val(self):
+        arr = BitArray(bin(self.coding))
+        idx = 0
+        for i in range(len(arr)):
+            if arr[len(arr) - i - 1]:
+                idx = i
+                break
+        return 1 << idx
 
     # get the string list which lists the bits of the encoding with the highest bit starting from 0 position
     def get_bin_list(self):
@@ -154,6 +168,76 @@ class EBEncoding:
             cur = cur + time_delta
         return EBEncoding(code, num_bits)
 
+    @staticmethod
+    # compute the cross correlation between two encoded episodes
+    def xcorr(e1, e2):
+        """
+        the cross correlation is a metric to measure how two episodes are
+        correlated. it can help derive their temporal relations, e.g.,
+        begins earlier/later, overlaps, time delay analysis
+        :param e1:
+        :param e2:
+        :return: a list of two-element-tuple, the first element is x value
+         the second is the value of correlation(and op result)
+        """
+        # result sequence container
+        ret = []
+        x = 0
+        # moving left
+        max_size = max(len(BitArray(bin(e1.coding_value()))), len(BitArray(bin(e2.coding_value()))))
+        w_e1 = EBEncoding(e1.coding_value(), max_size * 2)
+        w_e2 = EBEncoding(e2.coding_value(), max_size * 2)
+        t_e2 = w_e2.clone()
+        while w_e1.get_highest_bit_val() >= t_e2.get_lowest_bit_val():
+            r_and = EBEncoding.eb_and(w_e1, t_e2)
+            ret.append( (x, r_and.coding_value()) )
+            # shift e2 to the left until the and result becomes zero
+            v2 = t_e2.lshift(1)
+            t_e2 = EBEncoding(v2, w_e1.size())
+            x += 1
+
+        t_e2 = w_e2.clone()
+        v2 = t_e2.rshift(1)
+        t_e2 = EBEncoding(v2, w_e1.size())
+        x = -1
+
+        # moving right
+        while w_e1.get_lowest_bit_val() <= t_e2.get_highest_bit_val():
+            r_and = EBEncoding.eb_and(w_e1, t_e2)
+            ret.append( (x, r_and.coding_value()) )
+            # shift e2 to the left until the and result becomes zero
+            v2 = t_e2.rshift(1)
+            t_e2 = EBEncoding(v2, w_e1.size())
+            x -= 1
+        ret = sorted(ret, cmp=lambda v1, v2: v1[0] - v2[0])
+        return ret
+
+    @staticmethod
+    def num_units_earlier(xcorr_val, e1):
+        """
+        calculate how many units e2 is earlier than e1 using their cross correlation
+        results. if e2 is later than e1, a negative number will be returned.
+        :param xcorr_val:
+        :param e1:
+        :return:
+        """
+        lv = e1.get_lowest_bit_val()
+        max_x = 0
+        for i in range(len(xcorr_val)):
+            if xcorr_val[len(xcorr_val) - i - 1][1] & lv != 0:
+                max_x = xcorr_val[len(xcorr_val) - i - 1][0]
+                break
+        return max_x
+
+    @staticmethod
+    def time_delay(xcorr_val):
+        max_vals = []
+        val_sorted = sorted(xcorr_val, cmp=lambda v1, v2: v2[1] - v1[1])
+        max_vals.append(val_sorted[0])
+        for i in range(1, len(val_sorted), 1):
+            if val_sorted[i][1] == val_sorted[0][1]:
+                max_vals.append(val_sorted[i])
+        return max_vals
 
 # the vector of EBEncoding
 class EBVector:
