@@ -5,6 +5,7 @@ The motivation of such encoding is to make time series data easy to be consumed.
 
 ## updates
 - (11 November 2016) Cross correlation (similar to [the correlaiton in signal processing](https://en.wikipedia.org/wiki/Cross-correlation)) between two encodings is implemented. The correlation result is a list of 2-element tuple, of which the first element is the time shift and the second is the value of the correlation based on the time shift. This correlation enables the calculation of various time correlations between two encodings, e.g., which one is earlier than the other and how many time units; time delay analysis: at what time shift the correlation value achieves the maximum value. Also, a negative time delay analysis is on its way, which will be very useful for analysing the effectiveness of treatment episodes for certain symptoms/disorders.
+  An example of usage can be found at the function of `test_correlation()` in [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/ebencoding_example.py).
 - (23 September 2016) Define classess of EBEncoding and EBVector with opertators. The update was put on a new branch, which was set as the default branch. A sample usage file was added and the applicaiton of the encoding/vectors/matrix in Adverse Drug Event analytics was implemented in the `EBUtils.py`.
 
 ## Usage
