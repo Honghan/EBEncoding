@@ -12,6 +12,7 @@ db_cnn_str = "dbname='mimic' user='postgres' password='' host='localhost'"
 # query templates
 # patient cohort by diagnosis template
 qt_patient_cohort = """
+
 select distinct p.*
 from mimiciii.diagnoses_icd d, mimiciii.patients p
 where d.icd9_code = '{}'
