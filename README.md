@@ -13,6 +13,7 @@ The motivation of such encoding is to make time series data easy to be consumed.
 The EBEncoding.py contains the encoding class and vector class definition. Two usage examples:
 - the general usage example is available [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/ebencoding_example.py)
 - the application of the encoding in Adverse Drug Event Analytics is [here](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/EBUtil.py)
+- prefer encoding a real EHR data? check `test_sepsis_encoding()` in [mimic events encoding](https://github.com/Honghan/EBEncoding/blob/eb_algebra/EBEncoding/MEEncoder.py) if you have access to [Mimic III](https://mimic.physionet.org/).
 
 ## Analytics using the coding
 - [Association Analysis of Adverse Drug Events and Polyphamacy](http://honghan.info/kcl/ade/) 
