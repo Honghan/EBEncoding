@@ -28,9 +28,10 @@ known_causes_enuresis = ["Aripiprazole", "Quetiapine", "Olanzapine",
                 "Mirtazapine", "Amoxapine", "Valproic Acid", "Zonisamide", "Citalopram",
                 "Iloperidone", "Fluvoxamine", "Bupropion"]
 
+
 # parse the string to datetime
-def parse_date_str(date_str):
-    return datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S.%f')
+def parse_date_str(date_str, format_str='%Y-%m-%d %H:%M:%S.%f'):
+    return datetime.strptime(date_str, format_str)
 
 
 # don't do any temporal encoding
