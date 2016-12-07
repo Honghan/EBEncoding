@@ -77,7 +77,9 @@ def test_sepsis_encoding():
     print 'The first admission object:\n {}'.format(adms[0])
 
     print 'the lab events encoding of the first admission is as follows:'
-    t2encodings = get_admission_lab_event_encodings(adms[0], 10, 120)
+    time_period_to_encode = 10  # in days
+    encoding_size = 120  # number of bits in each encoding
+    t2encodings = get_admission_lab_event_encodings(adms[0], time_period_to_encode, encoding_size)
     for t in t2encodings:
         print '{}\n{}'.format(t, ''.join(t2encodings[t].get_bin_list()))
 
