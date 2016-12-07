@@ -4,6 +4,7 @@ import Queue
 import threading
 import json
 import codecs
+import csv
 
 
 # list files in a folder and put them in to a queue for multi-threading processing
@@ -81,6 +82,25 @@ def multi_thread_do(q, func, *args):
 def save_json_obj(obj, file_path):
     with codecs.open(file_path, 'w', encoding='utf-8') as wf:
         json.dump(obj, wf)
+
+
+def load_json_data(file_path):
+    with codecs.open(file_path,  encoding='utf-8') as wf:
+        return json.load(wf)
+
+
+# read csv file and return rows and header objects
+def read_csv_file(file_path):
+    data = []
+    with codecs.open(file_path, encoding='utf-8') as csvfile:
+        rows = csv.DictReader(csvfile)
+        header = rows.fieldnames
+        for r in rows:
+            d = {}
+            for c in header:
+                d[c] = r[c]
+            data.append(d)
+    return data
 
 
 def main():

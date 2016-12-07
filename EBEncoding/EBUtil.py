@@ -18,6 +18,8 @@ import scipy.io as sio
 import plotly.graph_objs as go
 import plotly.plotly as py
 import gutils as gu
+import matplotlib.pyplot as plt
+import math
 
 
 # the known causes of enuresis from sider database
@@ -297,6 +299,34 @@ def do_drugdrug_ade_analysis():
                     known_knowledge=known_causes_enuresis)
 
 
+def spike_func(x):
+    y = []
+    for i in range(len(x)):
+        y.append(10 if len(x)/4 < i < len(x)/2 else 0)
+    return y
+
+def zero_func(x):
+    return [0 for v in x]
+
+def fourier_transform_encoding():
+    Fs = 150.0;  # sampling rate
+    Ts = 1.0 / Fs;  # sampling interval
+    t = np.arange(0, 1, Ts)  # time vector
+    ff = 5
+    # sin = np.sin(2 * np.pi * t * ff + np.pi / 6)
+    sin = zero_func(t)
+    print sin
+    sp = np.fft.fft(sin)
+    freq = np.fft.fftfreq(t.shape[-1])
+    plt.plot(t, sin)
+    plt.show()
+    arr = [0 if v < 1.0/10000 else v for v in abs(sp)[range(len(sp)/2)]]
+    phase = [0 if abs(v) < 1.0/10000 else math.atan2(v.imag, v.real) * 180 / np.pi + 90 for v in sp[range(len(sp)/2)]]
+    print len(arr)
+    print arr
+    print phase
+
+
 def save_drug_cat():
     fp = './data/drug_cat.csv'
     rows = gu.read_csv_file(fp)
@@ -309,7 +339,8 @@ def save_drug_cat():
 
 if __name__ == "__main__":
     # do_drugdrug_ade_analysis()
-    do_single_drug_ade_analytics()
+    # do_single_drug_ade_analytics()
+    fourier_transform_encoding()
 
 
 
