@@ -71,14 +71,18 @@ def get_admission_lab_event_encodings(adm, days_to_be_encoded, coding_size):
                   )
 
 
-if __name__ == '__main__':
+def test_sepsis_encoding():
     adms = md.get_admissions('99592')  # severe sepsis diagnosis
-    print adms[0]
     print '#admissions with diagnose of severe sepsis {}'.format(len(adms))
+    print 'The first admission object:\n {}'.format(adms[0])
 
     print 'the lab events encoding of the first admission is as follows:'
     t2encodings = get_admission_lab_event_encodings(adms[0], 10, 120)
     for t in t2encodings:
         print '{}\n{}'.format(t, ''.join(t2encodings[t].get_bin_list()))
+
+
+if __name__ == '__main__':
+    test_sepsis_encoding()
 
 
