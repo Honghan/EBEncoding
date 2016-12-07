@@ -23,4 +23,5 @@ The EBEncoding.py contains the encoding class and vector class definition. Two u
 This is my ongoing work (2016) at Kings College London. Any questions please email: honghan.wu@kcl.ac.uk.
 
 ##citation
-Honghan Wu, Zina Ibrahim, Ehtesham Iqbal and Richard Dobson. Predicting Adverse Events from Multiple and Dynamic Medication Episodes - a preliminary result in a large mental health registry. Accepted by IJCAI 2016 - Workshop on Knowledge Discovery in Healthcare Data.
+If you find this useful, please cite the following publication. 
+- Wu, Honghan, Zina M. Ibrahim, Ehtesham Iqbal, and Richard JB Dobson. “Encoding Medication Episodes for Adverse Drug Event Prediction.” In Research and Development in Intelligent Systems XXXIII: Incorporating Applications and Innovations in Intelligent Systems XXIV, pp. 245-250. Springer International Publishing, 2016.
