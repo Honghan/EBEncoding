@@ -71,6 +71,27 @@ def get_admission_lab_event_encodings(adm, days_to_be_encoded, coding_size):
                   )
 
 
+def get_admission_chart_event_encodings(adm, days_to_be_encoded, coding_size):
+    """
+    given an admission id, read all chart events and encode
+    all abnormal events
+    :param adm:
+    :param days_to_be_encoded: how many days of events to be encoded (after the admission date)
+    :param coding_size: the size (in bits) of the encoding
+    :return:
+    """
+    unit_hours = days_to_be_encoded * 24 / coding_size
+    anchor_time = preprocessing_datetime(
+        eu.parse_date_str(
+            adm['admittime'], format_str='%Y-%m-%d %H:%M:%S') + timedelta(days=days_to_be_encoded))
+    chart_events = md.get_chartevents_by_admission(adm['hadm_id'])
+    return encode(chart_events, anchor_time, 'charttime', coding_size, unit_hours,
+                  func_is_abnormal=lambda event: event['warning'] == 1,
+                  func_get_type=lambda event: '{} - {}'.format(event['category'], event['label'])
+                  #lambda event: event['label']
+                  )
+
+
 def test_sepsis_encoding():
     adms = md.get_admissions('99592')  # severe sepsis diagnosis
     print '#admissions with diagnose of severe sepsis {}'.format(len(adms))
@@ -80,6 +101,11 @@ def test_sepsis_encoding():
     time_period_to_encode = 10  # in days
     encoding_size = 120  # number of bits in each encoding
     t2encodings = get_admission_lab_event_encodings(adms[0], time_period_to_encode, encoding_size)
+    for t in t2encodings:
+        print '{}\n{}'.format(t, ''.join(t2encodings[t].get_bin_list()))
+
+    print 'chart events encoding is as follows:'
+    t2encodings = get_admission_chart_event_encodings(adms[0], time_period_to_encode, encoding_size)
     for t in t2encodings:
         print '{}\n{}'.format(t, ''.join(t2encodings[t].get_bin_list()))
 
