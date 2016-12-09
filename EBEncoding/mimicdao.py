@@ -36,6 +36,23 @@ and l.itemid = d.itemid
 order by l.itemid, charttime
 """
 
+# get admission chart events
+qt_chartevents_by_admssion = """
+select l.*, d.label, d.category
+from mimiciii.chartevents l, mimiciii.d_items d
+where hadm_id={}
+and l.itemid = d.itemid
+order by l.itemid, charttime
+"""
+
+# get procedure events
+qt_procdure_by_admssion = """
+select i.label, p.*
+from mimiciii.procedureevents_mv p, mimiciii.d_items i
+where p.hadm_id={} and p.itemid=i.itemid
+order by starttime
+"""
+
 
 # create db connection
 def get_db_connection():
@@ -82,10 +99,22 @@ def get_admissions(icd9_code):
     return adms
 
 
+def get_events_by_admission(event_query_tempalte, hadm_id):
+    events = []
+    query_data(event_query_tempalte.format(hadm_id), events)
+    return events
+
+
 def get_labevents_by_admission(hadm_id):
-    les = []
-    query_data(qt_labevents_by_admssion.format(hadm_id), les)
-    return les
+    return get_events_by_admission(qt_labevents_by_admssion, hadm_id)
+
+
+def get_chartevents_by_admission(hadm_id):
+    return get_events_by_admission(qt_chartevents_by_admssion, hadm_id)
+
+
+def get_procedures_by_admission(hadm_id):
+    return get_events_by_admission(qt_procdure_by_admssion, hadm_id)
 
 
 if __name__ == "__main__":
