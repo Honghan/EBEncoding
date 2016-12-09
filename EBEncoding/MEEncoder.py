@@ -1,3 +1,10 @@
+# Mimic III Event Encoding functions
+# Honghan Wu @KCL
+# 2016
+# These functions are designed in an admission centric way
+# which means one is expect to retrieve events based on
+# an admission ID in mimic.
+#
 from EBEncoding import EBEncoding
 import mimicdao as md
 import EBUtil as eu
